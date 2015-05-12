@@ -6,6 +6,7 @@
 #include "G4Orb.hh"
 #include "G4Sphere.hh"
 #include "G4Tubs.hh"
+#include "G4SubtractionSolid.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
@@ -43,7 +44,7 @@ G4VPhysicalVolume* ASANDetectorConstruction::Construct()
   // Shape 1
   std::vector<G4int> natoms;
   std::vector<G4String> elements;
-  G4double density = 1.180*g/cm3;
+	G4double density = 1.180*g/cm3;
 
   elements.push_back("C");     natoms.push_back(5);
   elements.push_back("H");     natoms.push_back(8);
@@ -55,8 +56,6 @@ G4VPhysicalVolume* ASANDetectorConstruction::Construct()
   G4double s1innerRadiusOfTheTube = 0.5*cm;
   G4double s1outerRadiusOfTheTube = 8.*cm;
   G4double s1heightOfTheTube = 15.*cm;
-  G4double s1startAngleOfTheTube = 0.*deg;
-  G4double s1spanningAngleOfTheTube = 360.*deg;
  
   // Shape 2
   G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_GRAPHITE");
@@ -65,8 +64,6 @@ G4VPhysicalVolume* ASANDetectorConstruction::Construct()
   G4double s2innerRadiusOfTheTube = 0.*cm;
   G4double s2outerRadiusOfTheTube = 0.4*cm;
   G4double s2heightOfTheTube = 10.*cm;
-  G4double s2startAngleOfTheTube = 0.*deg;
-  G4double s2spanningAngleOfTheTube = 360.*deg;
 
   // Shape 3
   G4Material* shape3_mat = nist->FindOrBuildMaterial("G4_C-552");
@@ -75,18 +72,14 @@ G4VPhysicalVolume* ASANDetectorConstruction::Construct()
   G4double s3innerRadiusOfTheTube = 0.4*cm;
   G4double s3outerRadiusOfTheTube = 0.5*cm;
   G4double s3heightOfTheTube = 10.*cm;
-  G4double s3startAngleOfTheTube = 0.*deg;
-  G4double s3spanningAngleOfTheTube = 360.*deg;
-
+  
   // Shape 4
   G4Material* shape4_mat = nist->FindOrBuildMaterial("G4_Al");
   G4ThreeVector pos4 = G4ThreeVector(0, 0*cm, 0*cm);
   // Cylinder
   G4double s4innerRadiusOfTheTube = 8*cm;
-  G4double s4outerRadiusOfTheTube = 8.1*cm;
-  G4double s4heightOfTheTube = 15.*cm;
-  G4double s4startAngleOfTheTube = 0.*deg;
-  G4double s4spanningAngleOfTheTube = 360.*deg;
+  G4double s4outerRadiusOfTheTube = 8.5*cm;
+  G4double s4heightOfTheTube = 5.*cm;
  
 
   /// Create objects
@@ -139,11 +132,21 @@ G4VPhysicalVolume* ASANDetectorConstruction::Construct()
                  s1innerRadiusOfTheTube, 
                  s1outerRadiusOfTheTube,
                  s1heightOfTheTube/2,
-                 s1startAngleOfTheTube, 
-                 s1spanningAngleOfTheTube);
-                      
+                 0.*deg, 
+                 360.*deg);
+				 
+  G4Tubs* solidShapeRem1 = new G4Tubs("Shape1_1", 0.*mm, 5.*mm, s1heightOfTheTube/2, 0.*deg,360.*deg);
+  G4Tubs* solidShapeRem2 = new G4Tubs("Shape1_2", 0.*mm, 5.*mm, s1heightOfTheTube/2, 0.*deg,360.*deg);
+  G4Tubs* solidShapeRem3 = new G4Tubs("Shape1_3", 0.*mm, 5.*mm, s1heightOfTheTube/2, 0.*deg,360.*deg);
+  G4Tubs* solidShapeRem4 = new G4Tubs("Shape1_4", 0.*mm, 5.*mm, s1heightOfTheTube/2, 0.*deg,360.*deg);
+ 
+  G4SubtractionSolid* b1minusC1 = new G4SubtractionSolid("Shape1", solidShape1, solidShapeRem1,0,G4ThreeVector(0.*cm, 6.5*cm, 0.*cm));
+  b1minusC1 = new G4SubtractionSolid("Shape1", b1minusC1, solidShapeRem1,0,G4ThreeVector(0.*cm, -6.5*cm, 0.*cm));
+  b1minusC1 = new G4SubtractionSolid("Shape1", b1minusC1, solidShapeRem1,0,G4ThreeVector(6.5*cm, 0.*cm, 0.*cm));
+  b1minusC1 = new G4SubtractionSolid("Shape1", b1minusC1, solidShapeRem1,0,G4ThreeVector(-6.5*cm, 0.*cm, 0.*cm));
+  
   G4LogicalVolume* logicShape1 =                         
-    new G4LogicalVolume(solidShape1,         //its solid
+    new G4LogicalVolume(b1minusC1,         //its solid
                         shape1_mat,          //its material
                         "Shape1");           //its name
                
@@ -166,8 +169,8 @@ G4VPhysicalVolume* ASANDetectorConstruction::Construct()
                  s2innerRadiusOfTheTube, 
                  s2outerRadiusOfTheTube,
                  s2heightOfTheTube/2,
-                 s2startAngleOfTheTube, 
-                 s2spanningAngleOfTheTube);
+                 0.*deg, 
+                 360.*deg);
 
   G4LogicalVolume* logicShape2 =                         
     new G4LogicalVolume(solidShape2,         //its solid
@@ -193,8 +196,9 @@ G4VPhysicalVolume* ASANDetectorConstruction::Construct()
                  s3innerRadiusOfTheTube, 
                  s3outerRadiusOfTheTube,
                  s3heightOfTheTube/2,
-                 s3startAngleOfTheTube, 
-                 s3spanningAngleOfTheTube);
+                 0.*deg, 
+                 360.*deg);
+
 
   G4LogicalVolume* logicShape3 =                         
     new G4LogicalVolume(solidShape3,         //its solid
@@ -224,8 +228,8 @@ G4VPhysicalVolume* ASANDetectorConstruction::Construct()
                  s4innerRadiusOfTheTube, 
                  s4outerRadiusOfTheTube,
                  s4heightOfTheTube/2,
-                 s4startAngleOfTheTube, 
-                 s4spanningAngleOfTheTube);
+                 0.*deg, 
+                 360.*deg);
                       
   G4LogicalVolume* logicShape4 =                         
     new G4LogicalVolume(solidShape4,         //its solid
