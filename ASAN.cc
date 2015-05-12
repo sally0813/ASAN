@@ -12,7 +12,7 @@ ofstream outfile("out.txt");
 #endif
 
 #include "G4UImanager.hh"
-#include "QBBC.hh"
+#include "QGSP_BIC.hh"
 
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
@@ -48,7 +48,7 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(new ASANDetectorConstruction());
 
   // Physics list
-  G4VModularPhysicsList* physicsList = new QBBC;
+  G4VModularPhysicsList* physicsList = new QGSP_BIC;
   physicsList->SetVerboseLevel(0);
   runManager->SetUserInitialization(physicsList);
     

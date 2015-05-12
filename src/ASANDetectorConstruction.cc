@@ -233,7 +233,7 @@ G4VPhysicalVolume* ASANDetectorConstruction::Construct()
     new G4LogicalVolume(solidShape4,         //its solid
                         shape4_mat,          //its material
                         "Shape4");           //its name
-               
+  /*             
   new G4PVPlacement(0,                       //no rotation
                     pos4,                    //at position
                     logicShape4,             //its logical volume
@@ -242,7 +242,7 @@ G4VPhysicalVolume* ASANDetectorConstruction::Construct()
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
-
+  */
 ////
                 
   // Set Shape2 as scoring volume

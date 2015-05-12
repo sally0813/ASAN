@@ -10,7 +10,7 @@
 #include "G4SystemOfUnits.hh"
 #include "Randomize.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#include <math.h>
 
 ASANPrimaryGeneratorAction::ASANPrimaryGeneratorAction()
 : G4VUserPrimaryGeneratorAction(),
@@ -30,14 +30,12 @@ ASANPrimaryGeneratorAction::ASANPrimaryGeneratorAction()
   fParticleGun->SetParticleEnergy(70.*keV);
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 ASANPrimaryGeneratorAction::~ASANPrimaryGeneratorAction()
 {
   delete fParticleGun;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void ASANPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
@@ -53,11 +51,17 @@ void ASANPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   //G4double y0 = size * envSizeXY * (G4UniformRand()-0.5);
   //G4double z0 = -0.5 * envSizeZ;
 
-  G4double x0 = 0.;
+  G4double x0 = 1.*cm*(G4UniformRand()-0.5);
   G4double y0 = 20.*cm;
-  G4double z0 = 0.;
-  
+  G4double z0 = 1.*cm*(G4UniformRand()-0.5);
+  G4double angle1 = atan(8./20)*2*(G4UniformRand()-0.5);
+  G4double angle2 = atan(4./20)*(G4UniformRand()-0.5);
+
+
+
+
   fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(sin(angle1),-cos(angle1),sin(angle2)));
 
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }
