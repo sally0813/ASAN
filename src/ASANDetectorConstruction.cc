@@ -135,15 +135,13 @@ G4VPhysicalVolume* ASANDetectorConstruction::Construct()
                  0.*deg, 
                  360.*deg);
 				 
-  G4Tubs* solidShapeRem1 = new G4Tubs("Shape1_1", 0.*mm, 5.*mm, s1heightOfTheTube/2, 0.*deg,360.*deg);
-  G4Tubs* solidShapeRem2 = new G4Tubs("Shape1_2", 0.*mm, 5.*mm, s1heightOfTheTube/2, 0.*deg,360.*deg);
-  G4Tubs* solidShapeRem3 = new G4Tubs("Shape1_3", 0.*mm, 5.*mm, s1heightOfTheTube/2, 0.*deg,360.*deg);
-  G4Tubs* solidShapeRem4 = new G4Tubs("Shape1_4", 0.*mm, 5.*mm, s1heightOfTheTube/2, 0.*deg,360.*deg);
+  G4Tubs* solidShapeRem = new G4Tubs("Shape1_1", 0.*mm, 5.*mm, s1heightOfTheTube, 0.*deg,360.*deg);
+
  
-  G4SubtractionSolid* b1minusC1 = new G4SubtractionSolid("Shape1", solidShape1, solidShapeRem1,0,G4ThreeVector(0.*cm, 6.5*cm, 0.*cm));
-  b1minusC1 = new G4SubtractionSolid("Shape1", b1minusC1, solidShapeRem1,0,G4ThreeVector(0.*cm, -6.5*cm, 0.*cm));
-  b1minusC1 = new G4SubtractionSolid("Shape1", b1minusC1, solidShapeRem1,0,G4ThreeVector(6.5*cm, 0.*cm, 0.*cm));
-  b1minusC1 = new G4SubtractionSolid("Shape1", b1minusC1, solidShapeRem1,0,G4ThreeVector(-6.5*cm, 0.*cm, 0.*cm));
+  G4SubtractionSolid* b1minusC1 = new G4SubtractionSolid("Shape1", solidShape1, solidShapeRem,0,G4ThreeVector(0.*cm, 6.5*cm, 0.*cm));
+  b1minusC1 = new G4SubtractionSolid("Shape1", b1minusC1, solidShapeRem,0,G4ThreeVector(0.*cm, -6.5*cm, 0.*cm));
+  b1minusC1 = new G4SubtractionSolid("Shape1", b1minusC1, solidShapeRem,0,G4ThreeVector(6.5*cm, 0.*cm, 0.*cm));
+  b1minusC1 = new G4SubtractionSolid("Shape1", b1minusC1, solidShapeRem,0,G4ThreeVector(-6.5*cm, 0.*cm, 0.*cm));
   
   G4LogicalVolume* logicShape1 =                         
     new G4LogicalVolume(b1minusC1,         //its solid
