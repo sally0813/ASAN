@@ -96,7 +96,9 @@ void ASANRunAction::EndOfRunAction(const G4Run* run)
     G4cout
      << G4endl
      << "--------------------End of Global Run-----------------------";
-	outfile << G4BestUnit(dose,"Dose") << endl;
+	//outfile << G4BestUnit(dose,"Dose") << endl;
+	outfile << dose/(1.e-9*gray) << endl;
+
 	//outfile << "Test" << endl;
   }
   else {
